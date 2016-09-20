@@ -1,0 +1,56 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+
+.employee-list-item{
+    position: relative;
+
+    .employee-form{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+
+/* *
+Transitions/Animations
+ */
+
+.invisible{
+    visibility: hidden;
+}
+
+.slideout-transition {
+    transition: all .5s ease;
+    opacity:1;
+    transform:translate3d(0, 0, 0);
+}
+
+.slideout-enter{
+    transform:translate3d(0, 300%, 0);
+    opacity:0;
+}
+
+.slideout-leave {
+    opacity:0;
+    transform:translate3d(100%, 0, 0);
+}
+
+.fade-transition{
+    transition: opacity .75s ease;
+    opacity:1;
+}
+
+.fade-enter,
+.fade-leave{
+    opacity:0;
+}
