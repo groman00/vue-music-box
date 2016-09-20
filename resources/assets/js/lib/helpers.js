@@ -19,8 +19,6 @@ function getFrequencyOfNote(note) {
     return 440 * Math.pow(2, (key_number - 49) / 12);
 }
 
-module.exports.getFrequencyOfNote = getFrequencyOfNote;
-
 function nodesToPlainObject(nodes) {
     return nodes.map(function(node){
         return {
@@ -30,4 +28,4 @@ function nodesToPlainObject(nodes) {
     });    
 }
 
-module.exports.nodesToPlainObject = nodesToPlainObject;
+export {getFrequencyOfNote, nodesToPlainObject};

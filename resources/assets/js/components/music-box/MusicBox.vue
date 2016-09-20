@@ -88,7 +88,7 @@
             },            
             playSong() {
                 var length = this.measures.length;
-                this.context.resume()
+                this.context.resume();
                 this.songNodes.forEach(function(node, i){
                     node.register();
                 }.bind(this));  

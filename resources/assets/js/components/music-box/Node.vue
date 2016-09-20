@@ -15,17 +15,18 @@
             };
         },
         methods: {
-            register: function() {
-                var start = this.measure * this.speed;
-                var end = start + this.speed;  
+            register: function(opts = {}) {
+                var options = Object.assign({
+                    start: this.measure * this.speed,
+                    end: (this.measure * this.speed) + this.speed
+                }, opts);
                 var currentTime = this.context.currentTime;
-
                 this.oscillator = this.context.createOscillator();
                 this.oscillator.connect(this.context.destination);
                 this.oscillator.type = this.waveType;
                 this.oscillator.frequency.value = helpers.getFrequencyOfNote(this.note);
-                this.oscillator.start(currentTime + start);
-                this.oscillator.stop(currentTime + end);
+                this.oscillator.start(currentTime + options.start);
+                this.oscillator.stop(currentTime + options.end);
             },
             add: function() {
                 this.songNodes.push(this);
@@ -40,9 +41,23 @@
                     }
                 }.bind(this));
             },
+            playSample: function() {
+                var sample;
+                this.context.resume();
+                this.register({start: 0, end: .25});
+                sample = setInterval(function() {
+                    this.context.suspend();
+                    clearInterval(sample);
+                }.bind(this), 250);                
+            },
             toggle: function() {
                 this.isActive = !this.isActive;
-                this.isActive ? this.add() : this.remove();
+                if(this.isActive) {
+                    this.add();
+                    this.playSample();
+                } else {
+                    this.remove();
+                }
             },
             deactivate: function() {
                 this.stopOscillator();
