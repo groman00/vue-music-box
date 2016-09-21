@@ -24,6 +24,7 @@
 <script>
     import { nodesToPlainObject } from '../lib/helpers';
     import { http } from '../lib/http';
+
     const DEFAULT_NOTES = ['B', 'A#', 'A', 'G#', 'G', 'F#', 'F', 'E', 'D#', 'D', 'C#', 'C'];
 
     export default {   
@@ -56,7 +57,24 @@
                     });
                 });
                 this.notes = newNotes;
-            }
+            },
+            saveSong(method, song = {}) {
+                var nodes, title;
+                var path = '/api/song';
+                if (!this.songNodes.length) {
+                    alert('Make some music first!');
+                    return false;
+                }
+                if (song.id){
+                    path = path + '/' + song.id;
+                }
+                title = window.prompt('Enter a song title', (song.title || ''));
+                nodes = nodesToPlainObject(this.songNodes);
+                http[method](path, {
+                    title: title,
+                    nodes: JSON.stringify(nodes)
+                });
+            }            
         },
         events: {
             setActiveSong(song) {
@@ -111,28 +129,11 @@
                 this.activeMeasure = -1;
                 this.state = 'stopped';
             },
-            saveSong() {
-                // editSong and saveSong are practically the same...
-                var nodes, title;
-                if (!this.songNodes.length) {
-                    alert('Make some music first!');
-                    return false;
-                }
-                title = window.prompt('Enter a song title', '');
-                nodes = nodesToPlainObject(this.songNodes);
-                http.post('/api/song', {
-                    title: title,
-                    nodes: JSON.stringify(nodes)
-                });
+            saveAsNew() {
+                this.saveSong('post');
             },
             editSong() {
-                var song = this.$get('activeSong');
-                var nodes = nodesToPlainObject(this.songNodes);
-                var title = window.prompt('Enter a song title', song.title);
-                http.patch('/api/song/' + song.id, {
-                    title: title,
-                    nodes: JSON.stringify(nodes)
-                });
+                this.saveSong('patch', this.$get('activeSong'));
             }            
         }
     }

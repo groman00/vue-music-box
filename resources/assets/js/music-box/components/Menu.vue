@@ -45,7 +45,7 @@
                 this.$dispatch('stopSong');  
             },
             save() {
-                this.$dispatch('saveSong');
+                this.$dispatch('saveAsNew');
             },
             load() {
                 this.$dispatch('loadSongs');                
