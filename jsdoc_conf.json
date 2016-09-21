@@ -1,0 +1,19 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "source": {
+        "include": [
+            "resources/assets/js/music-box/lib",
+            "resources/assets/js/music-box/components"
+        ],
+        "includePattern": "\\.(vue|js)$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": ["node_modules/vue-doc/index"],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    }
+}

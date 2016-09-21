@@ -27,10 +27,19 @@
 
     const DEFAULT_NOTES = ['B', 'A#', 'A', 'G#', 'G', 'F#', 'F', 'E', 'D#', 'D', 'C#', 'C'];
 
+    /**
+     * MusicBox Application
+     * @module components/MusicBox
+     */
     export default {   
         ready() {
             this.loadNotes();
         },
+
+        /**
+         * Data
+         * @return {Object}
+         */
         data() {
             return {
                 context: new AudioContext(),
@@ -49,6 +58,10 @@
             };
         },
         methods: {
+
+            /**
+             * Generate an Array of notes based on the total number of octaves
+             */            
             loadNotes() {
                 var newNotes = [];
                 this.octaves.forEach((octave) => {
@@ -58,6 +71,12 @@
                 });
                 this.notes = newNotes;
             },
+
+            /**
+             * Make a POST or PATCH request with active song nodes and song title
+             * @param  {String} method Request method, "post" or "patch"
+             * @param  {Object} song   Song to patch (optional)
+             */
             saveSong(method, song = {}) {
                 var nodes, title;
                 var path = '/api/song';
@@ -77,6 +96,11 @@
             }            
         },
         events: {
+
+            /**
+             * Loads song nodes to music box, while deactivating all currently active nodes
+             * @param {Object} song
+             */
             setActiveSong(song) {
                 var nodes;
                 this.$set('state', 'stopped');
@@ -87,16 +111,24 @@
                         this.songNodes.shift();
                     }
                     nodes = JSON.parse(song.nodes);
+                    //activate nodes for newly loaded song
                     nodes.forEach((node) => {
                         this.nodeRefs[node.note + '_' + node.measure].activate();
                     });
                     this.$set('activeSong', song);
                 }
             },
+
+            /**
+             * Add Node to nodeRefs dictionary
+             * @param {Object} node
+             */            
             addNodeRef(node) {
                 // v-ref doesn't work on <node> for some reason.  Doing this to keep a dictionary of nodes.
                 this.nodeRefs[node.note + '_' + node.measure] = node;
             },
+
+            /** Fetch songs from database */
             loadSongs() {
                 this.$set('state', 'loading');
                 http.get('/api/songs')
@@ -104,6 +136,8 @@
                         this.songs = songs;
                     });    
             },            
+
+            /** Register active nodes and trigger playback */
             playSong() {
                 var length = this.measures.length;
                 this.context.resume();
@@ -120,6 +154,8 @@
                     }
                 }, this.speed * 1000);
             },
+
+            /** Suspend AudioContext and stop all OscillatorNodes */
             stopSong() {  
                 clearInterval(this.playheadInterval);
                 this.context.suspend();
@@ -129,9 +165,13 @@
                 this.activeMeasure = -1;
                 this.state = 'stopped';
             },
+
+            /** Save song with post method */
             saveAsNew() {
                 this.saveSong('post');
             },
+
+            /** Save song with patch method */
             editSong() {
                 this.saveSong('patch', this.$get('activeSong'));
             }            

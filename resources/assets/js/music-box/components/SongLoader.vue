@@ -14,19 +14,32 @@
     </div>
 </template>
 <script>
+    /**
+     * Load previously saved song
+     * @module  components/SongLoader
+     * @param   {Array} songs - Array of saved songs
+     */
     export default {
         props: ['songs'],
+        
+        /**
+         * Data
+         * @return {Object}
+         */        
         data() {
             return {
                 selected: null 
             };
         },
         methods: {
+            
+            /** Dispatch "setActiveSong" event to parent when song is selected */
             submit() {
                 this.$dispatch('setActiveSong', this.$get('selected'));
             },
+
+            /** Dispatch "setActiveSong" event to parent without song parameter.  This will close the SongLoader */
             cancel() {
-                // passing false will close the modal
                 this.$dispatch('setActiveSong', false)
             }
         }
