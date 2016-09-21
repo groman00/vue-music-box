@@ -16,26 +16,19 @@
 <script>
     export default {
         props: ['songs'],
-        ready() {},
         data() {
             return {
                 selected: null 
             };
         },
-        created() {
-
-        },
         methods: {
-            submit: function() {
+            submit() {
                 this.$dispatch('setActiveSong', this.$get('selected'));
             },
-            cancel: function() {
+            cancel() {
                 // passing false will close the modal
                 this.$dispatch('setActiveSong', false)
             }
-        },
-        events: {
-
         }
     }
 </script>

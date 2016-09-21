@@ -2,7 +2,7 @@
     <div class="cell node" v-on:click="toggle" v-bind:class="{'active': isActive}" title="{{note}} - measure {{measure}}"></div>
 </template>
 <script>
-    var helpers = require('../../lib/helpers');
+    import { getFrequencyOfNote } from '../lib/helpers';
     export default {
         props: ['context', 'note', 'measure', 'speed', 'song-nodes', 'wave-type'],
         ready() {
@@ -15,7 +15,7 @@
             };
         },
         methods: {
-            register: function(opts = {}) {
+            register(opts = {}) {
                 var options = Object.assign({
                     start: this.measure * this.speed,
                     end: (this.measure * this.speed) + this.speed
@@ -24,50 +24,50 @@
                 this.oscillator = this.context.createOscillator();
                 this.oscillator.connect(this.context.destination);
                 this.oscillator.type = this.waveType;
-                this.oscillator.frequency.value = helpers.getFrequencyOfNote(this.note);
+                this.oscillator.frequency.value = getFrequencyOfNote(this.note);
                 this.oscillator.start(currentTime + options.start);
                 this.oscillator.stop(currentTime + options.end);
             },
-            add: function() {
+            add() {
                 this.songNodes.push(this);
             },
-            remove: function() {
+            remove() {
                 var measure = this.measure;
                 var note = this.note;
-                this.songNodes.forEach(function(item, i){
+                this.songNodes.forEach((item, i) => {
                     if(item.note === note && item.measure === measure) {
                         this.songNodes.splice(i, 1);
                         return false;
                     }
-                }.bind(this));
+                });
             },
-            playSample: function() {
-                var sample;
+            playPreview() {
+                var preview;
                 this.context.resume();
                 this.register({start: 0, end: .25});
-                sample = setInterval(function() {
+                preview = setInterval(() => {
                     this.context.suspend();
-                    clearInterval(sample);
-                }.bind(this), 250);                
+                    clearInterval(preview);
+                }, 250);                
             },
-            toggle: function() {
+            toggle() {
                 this.isActive = !this.isActive;
                 if(this.isActive) {
                     this.add();
-                    this.playSample();
+                    this.playPreview();
                 } else {
                     this.remove();
                 }
             },
-            deactivate: function() {
+            deactivate() {
                 this.stopOscillator();
                 this.isActive = false;
             },
-            activate: function() {
+            activate() {
                 this.isActive = true;
                 this.add();
             },
-            stopOscillator: function() {
+            stopOscillator() {
                 if(this.oscillator) {
                     this.oscillator.stop(0);
                 }

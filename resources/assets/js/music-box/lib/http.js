@@ -1,12 +1,12 @@
 var instance;
-var Http = function() {};
+const Http = () => {};
 
-Http.prototype.get = function(path) {
+Http.prototype.get = (path) => {
     return Vue.http.get(path)
         .then(response => response.json());    
 };
 
-Http.prototype.post = function(path, body) {
+Http.prototype.post = (path, body) => {
     return Vue.http.post(path, JSON.stringify(body), {
         headers: {
             'Accept': 'application/json',
@@ -15,7 +15,7 @@ Http.prototype.post = function(path, body) {
     });
 };
 
-Http.prototype.patch = function(path, body) {
+Http.prototype.patch = (path, body) => {
     return Vue.http.patch(path, JSON.stringify(body), {
         headers: {
             'Accept': 'application/json',
@@ -24,11 +24,11 @@ Http.prototype.patch = function(path, body) {
     });
 };
 
-var SingletonHttp = function() {
+const SingletonHttp = () => {
     if (instance === undefined) {
         instance = new Http();
     }
     return instance;
 };
 
-module.exports = new SingletonHttp();
+export let http = new SingletonHttp();

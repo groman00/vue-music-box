@@ -1,4 +1,4 @@
-function getFrequencyOfNote(note) {
+const getFrequencyOfNote = (note) => {
     var notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
     var key_number;
     var octave;
@@ -19,8 +19,8 @@ function getFrequencyOfNote(note) {
     return 440 * Math.pow(2, (key_number - 49) / 12);
 }
 
-function nodesToPlainObject(nodes) {
-    return nodes.map(function(node){
+const nodesToPlainObject = (nodes) => {
+    return nodes.map((node) => {
         return {
             note: node.note,
             measure: node.measure     

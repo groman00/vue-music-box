@@ -5,7 +5,7 @@
     export default {
         props: ['index', 'active-measure'],
         ready() {
-            this.$watch('activeMeasure', function(current, last){
+            this.$watch('activeMeasure', (current, last) => {
                 this.isActive = (this.index === current);
             });
         },
@@ -13,14 +13,6 @@
             return {
                 isActive: false
             };
-        },
-        created() {
-
-        },
-        methods: {
-        },
-        events: {
-
         }
     }
 </script>
