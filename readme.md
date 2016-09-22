@@ -7,8 +7,11 @@ Simple music programming tool that lets you compose, play and save your original
 ## Dependencies
 
 PHP >= 5.6.4
+
 [MySQL](https://dev.mysql.com/downloads/mysql/)
+
 [Composer](https://getcomposer.org/)
+
 [npm](https://www.npmjs.com/)
 
 
@@ -16,7 +19,7 @@ PHP >= 5.6.4
 
 ### 1. Configure Database
 
-[Update the mysql connection to match your local environment](https://laravel.com/docs/5.3/database#configuration)
+[Update mysql connection to match your local environment](https://laravel.com/docs/5.3/database#configuration)
 
 ### 2. Install
 
