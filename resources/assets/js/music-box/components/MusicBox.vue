@@ -1,10 +1,10 @@
 <template>
     <div class="music-box">
-        <menu :state="state" :active-song="activeSong" :speed.sync="speed" :wave-type.sync="waveType" :measures.sync="measures"></menu>
+        <menu :state="state" :active-song="activeSong" :speed.sync="speed" :wave-type.sync="waveType" :measures.sync="measures" :gain.sync="gain"></menu>
         <div class="box">
             <div class="table notes">
                 <div class="row" v-for="note in notes">
-                    <node v-for="measure in measures" track-by="$index" :context="context" :speed="speed" :song-nodes="songNodes" :measure="$index" :note="note" :wave-type="waveType"></node>
+                    <node v-for="measure in measures" track-by="$index" :context="context" :speed="speed" :song-nodes="songNodes" :measure="$index" :note="note" :wave-type="waveType" :gain-node="gainNode"></node>
                 </div>
             </div>
             <div class="table legend overlay">
@@ -27,13 +27,20 @@
 
     const DEFAULT_NOTES = ['B', 'A#', 'A', 'G#', 'G', 'F#', 'F', 'E', 'D#', 'D', 'C#', 'C'];
 
+    var audioContext = new AudioContext();
+
     /**
      * MusicBox Application
      * @module components/MusicBox
      */
     export default {   
         ready() {
-            this.loadNotes();
+            this.loadNotes();            
+            this.gainNode.connect(this.context.destination);
+            this.gainNode.gain.value = this.gain;
+            this.$watch('gain', (gain) => {
+                this.gainNode.gain.value = this.gain;
+            });
         },
 
         /**
@@ -42,7 +49,9 @@
          */
         data() {
             return {
-                context: new AudioContext(),
+                context: audioContext,
+                gainNode: audioContext.createGain(),
+                gain: .75,
                 notes: [],
                 octaves: [5, 4, 3],
                 measures: Array(40),

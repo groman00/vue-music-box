@@ -13,9 +13,10 @@
      * @param {Number}          measure - Measure that this node exists in
      * @param {Array}           songNodes - Array of Nodes in current song
      * @param {String}          waveType - Oscillator wave type
+     * @param {GainNode}        gainNode
      */
     export default {
-        props: ['context', 'note', 'measure', 'speed', 'song-nodes', 'wave-type'],
+        props: ['context', 'note', 'measure', 'speed', 'song-nodes', 'wave-type', 'gain-node'],
         ready() {
             this.$dispatch('addNodeRef', this)
         },
@@ -44,7 +45,9 @@
                 }, opts);
                 var currentTime = this.context.currentTime;
                 this.oscillator = this.context.createOscillator();
-                this.oscillator.connect(this.context.destination);
+                
+                //this.oscillator.connect(this.context.destination);
+                this.oscillator.connect(this.gainNode);
                 this.oscillator.type = this.waveType;
                 this.oscillator.frequency.value = getFrequencyOfNote(this.note);
                 this.oscillator.start(currentTime + options.start);

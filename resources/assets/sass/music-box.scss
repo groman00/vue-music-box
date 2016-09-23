@@ -5,6 +5,11 @@ a {
 }
 
 html,
+body{
+    font-family: 'Helvetica Neue', helvetica, sans-serif;
+}
+
+html,
 body,
 .table,
 .music-box{
@@ -93,20 +98,22 @@ body,
         width: 80%;
         padding: 6px;
         border: none;
-        margin: 10px 0 0;
+        //margin: 10px 0 0;
     }
 
     label{
         color: #fff;
         display: block;
-        margin:10px auto 0;
+        margin: 20px auto;
         width: 80%;   
+        font-weight:bold;
 
         input,
         select{
             border: none;
             width:100%;
             padding:0;
+            margin-top:10px;
         }
     }
 }

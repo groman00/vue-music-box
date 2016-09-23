@@ -1,27 +1,41 @@
 <template>
     <div class="menu">
-        <button class="button" v-if="state === 'stopped'" v-on:click="play">Play</button>
-        <button class="button" v-if="state === 'playing'" v-on:click="stop">Stop</button>        
-        <button class="button" v-on:click="save">Save</button>
-        <button class="button" v-on:click="load">Load</button>
-        <button class="button" v-show="activeSong" v-on:click="edit">Edit</button>
+        <label>
+            <button class="button" :disabled="state === 'playing'" v-on:click="play">Play</button>
+        </label>
+        <label>    
+            <button class="button" :disabled="state === 'stopped'" v-on:click="stop">Stop</button>        
+        </label>
+        <label>
+            <button class="button" v-on:click="save">Save</button>
+        </label>
+        <label>
+            <button class="button" v-on:click="load">Load</button>
+        </label>
+        <label>
+            <button class="button" :disabled="!activeSong" v-on:click="edit">Edit</button>
+        </label>
         <label>
             Speed
-            <input v-model="speed" number/>
+            <input v-model="speed" number :disabled="state === 'playing'"/>
         </label>
         <label>
             Measures
-            <input v-model="numMeasures" number/>
+            <input v-model="numMeasures" number :disabled="state === 'playing'"/>
         </label>        
         <label>
             Sound Type
-            <select v-model="waveType">
+            <select v-model="waveType" :disabled="state === 'playing'">
                 <option selected>sine</option>
                 <option>square</option>
                 <option>sawtooth</option>
                 <option>triangle</option>
             </select>            
         </label>            
+        <label>
+            Volume
+            <input v-model="gain" lazy type="range" min="0" max="5" step="0.1" value="{{ gain }}">
+        </label>
     </div>
 </template>
 <script>
@@ -35,7 +49,7 @@
      * @param {Array}   measures - Current number of measures
      */
     export default { 
-        props: ['speed', 'active-song', 'state', 'wave-type', 'measures'],
+        props: ['speed', 'active-song', 'state', 'wave-type', 'measures', 'gain'],
 
         /**
          * Data
